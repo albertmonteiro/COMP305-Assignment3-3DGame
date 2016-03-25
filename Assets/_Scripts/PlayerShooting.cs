@@ -18,6 +18,7 @@ public class PlayerShooting : MonoBehaviour
     private Rigidbody _rigidBody;
     private AudioSource[] _audioSources;
     private AudioSource _hurtSound;
+    private AudioSource _goldSound;
     //private GameController _gameController;
 
     // Use this for initialization
@@ -29,7 +30,8 @@ public class PlayerShooting : MonoBehaviour
 
         // Setup AudioSources
         this._audioSources = gameObject.GetComponents<AudioSource>();
-        this._hurtSound = this._audioSources[0];
+        this._goldSound = this._audioSources[1];
+        this._hurtSound = this._audioSources[2];
 
         // place the hero in the starting position
         this._spawn001();
@@ -102,7 +104,7 @@ public class PlayerShooting : MonoBehaviour
         if (other.gameObject.CompareTag("Gold"))
         {
             Debug.Log("Gold!");
-            //this._coinSound.Play();
+            this._goldSound.Play();
             Destroy(other.gameObject);
             this._gameController.ScoreValue += 10;
         }
@@ -111,7 +113,7 @@ public class PlayerShooting : MonoBehaviour
         if (other.gameObject.CompareTag("Gutter"))
         {
             Debug.Log("Lava!");
-            //this._spawn001();
+            this._spawn001();
             this._hurtSound.Play();
             this._gameController.LivesValue--;
         }

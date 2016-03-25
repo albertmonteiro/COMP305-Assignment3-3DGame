@@ -96,7 +96,7 @@ public class GameController : MonoBehaviour
         this.ScoreLabel.gameObject.SetActive(false);
         //this._gameOverSound.Play ();
         this.RestartButton.gameObject.SetActive(true);
-        this.playerShooting.gameObject.SetActive(false);
+        //this.playerShooting.gameObject.SetActive(false);
     }
 
     // PUBLIC METHODS
