@@ -9,16 +9,30 @@ public class PlayerShooting : MonoBehaviour
     //public GameObject muzzleFlash;
     //public GameObject bulletImpact;
     //public GameObject explosion;
+    //public Transform _transform;
+    public GameController _gameController;
 
-    public GameController gameController;
 
     // PRIVATE INSTANCE VARIABLES
-    //private Transform _transform;
+    private Transform _transform;
+    private Rigidbody _rigidBody;
+    private AudioSource[] _audioSources;
+    private AudioSource _hurtSound;
+    //private GameController _gameController;
 
     // Use this for initialization
     void Start()
     {
-        //this._transform = gameObject.GetComponent<Transform>();
+        this._transform = gameObject.GetComponent<Transform>();
+        this._rigidBody = gameObject.GetComponent<Rigidbody>();
+        this._gameController = GameObject.FindWithTag("GameController").GetComponent("GameController") as GameController;
+
+        // Setup AudioSources
+        this._audioSources = gameObject.GetComponents<AudioSource>();
+        this._hurtSound = this._audioSources[0];
+
+        // place the hero in the starting position
+        this._spawn001();
 
     } // end Start
 
@@ -58,6 +72,30 @@ public class PlayerShooting : MonoBehaviour
     //    } // end if
     //} // end FixedUpdate
 
+    //void OnCollisionEnter(Collider other)
+    //{
+    //    // Collision with a Bear event handler, gives the player 10 points
+    //    if (other.gameObject.CompareTag("Gold"))
+    //    {
+    //        Debug.Log("Gold!");
+    //        //this._coinSound.Play();
+    //        Destroy(other.gameObject);
+    //        this._gameController.ScoreValue += 10;
+    //    }
+
+    //    // Falling off the platform event handler, takes away a life and respawns to start of game
+    //    if (other.gameObject.CompareTag("Gutter"))
+    //    {
+    //        Transform playerTransform = other.gameObject.GetComponent<Transform>();
+    //        //playerTransform.position = this.spawnPoint;
+    //        Debug.Log("Lava!");
+    //        //this._spawn001();
+    //        //this._hurtSound.Play();
+    //        this._gameController.LivesValue--;
+    //    }
+
+    //}
+
     void OnCollisionEnter(Collision other)
     {
         // Collision with a Bear event handler, gives the player 10 points
@@ -66,7 +104,7 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("Gold!");
             //this._coinSound.Play();
             Destroy(other.gameObject);
-            this.gameController.ScoreValue += 10;
+            this._gameController.ScoreValue += 10;
         }
 
         // Falling off the platform event handler, takes away a life and respawns to start of game
@@ -74,9 +112,18 @@ public class PlayerShooting : MonoBehaviour
         {
             Debug.Log("Lava!");
             //this._spawn001();
-            //this._hurtSound.Play();
-            this.gameController.LivesValue--;
+            this._hurtSound.Play();
+            this._gameController.LivesValue--;
         }
 
     }
+
+    // Private Methods
+
+    // Spawns to start of game
+    private void _spawn001()
+    {
+        this._transform.position = new Vector3(4.21f, 1.67f, -4.85f);
+    }
+
 }

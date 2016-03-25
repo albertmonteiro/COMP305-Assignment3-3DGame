@@ -56,6 +56,7 @@ public class GameController : MonoBehaviour
     public Text GameOverLabel;
     public Text HighScoreLabel;
     public Button RestartButton;
+    public PlayerShooting playerShooting;
     //public GameObject player;
 
     // Use this for initialization
@@ -77,7 +78,7 @@ public class GameController : MonoBehaviour
     //Initial Method
     private void _initialize()
     {
-        this._playerSpawnPoint = new Vector3(4.2f, 1.65f, -4.85f);
+        //this._playerSpawnPoint = new Vector3(4.21f, 1.67f, -4.85f);
         this.ScoreValue = 0;
         this.LivesValue = 5;
         this.GameOverLabel.gameObject.SetActive(false);
@@ -95,6 +96,7 @@ public class GameController : MonoBehaviour
         this.ScoreLabel.gameObject.SetActive(false);
         //this._gameOverSound.Play ();
         this.RestartButton.gameObject.SetActive(true);
+        this.playerShooting.gameObject.SetActive(false);
     }
 
     // PUBLIC METHODS
