@@ -19,6 +19,7 @@ public class PlayerShooting : MonoBehaviour
     private AudioSource[] _audioSources;
     private AudioSource _hurtSound;
     private AudioSource _goldSound;
+    private AudioSource _ohYeahSound;
     //private GameController _gameController;
 
     // Use this for initialization
@@ -32,9 +33,10 @@ public class PlayerShooting : MonoBehaviour
         this._audioSources = gameObject.GetComponents<AudioSource>();
         this._goldSound = this._audioSources[1];
         this._hurtSound = this._audioSources[2];
+        this._ohYeahSound = this._audioSources[3];
 
         // place the hero in the starting position
-        this._spawn001();
+        this._spawnPoint();
 
     } // end Start
 
@@ -43,64 +45,11 @@ public class PlayerShooting : MonoBehaviour
     {
 
     } // end Update
-
-    //void FixedUpdate()
-    //{
-    //    if (Input.GetButtonDown("Fire1"))
-    //    {
-    //        Instantiate(this.muzzleFlash, flashPoint.position, Quaternion.identity);
-
-    //        RaycastHit hit; // stores information from the Ray;
-
-    //        if (Physics.Raycast(this._transform.position, this._transform.forward, out hit, 50f))
-    //        {
-
-    //            if (hit.transform.gameObject.CompareTag("Barrel"))
-    //            {
-    //                Instantiate(this.explosion, hit.point, Quaternion.identity);
-    //                Destroy(hit.transform.gameObject);
-    //                this.gameController.ScoreValue += 100;
-    //            }
-    //            else
-    //            {
-
-    //                Instantiate(this.bulletImpact, hit.point, Quaternion.identity);
-    //            }
-
-
-    //        }
-
-
-    //    } // end if
-    //} // end FixedUpdate
-
-    //void OnCollisionEnter(Collider other)
-    //{
-    //    // Collision with a Bear event handler, gives the player 10 points
-    //    if (other.gameObject.CompareTag("Gold"))
-    //    {
-    //        Debug.Log("Gold!");
-    //        //this._coinSound.Play();
-    //        Destroy(other.gameObject);
-    //        this._gameController.ScoreValue += 10;
-    //    }
-
-    //    // Falling off the platform event handler, takes away a life and respawns to start of game
-    //    if (other.gameObject.CompareTag("Gutter"))
-    //    {
-    //        Transform playerTransform = other.gameObject.GetComponent<Transform>();
-    //        //playerTransform.position = this.spawnPoint;
-    //        Debug.Log("Lava!");
-    //        //this._spawn001();
-    //        //this._hurtSound.Play();
-    //        this._gameController.LivesValue--;
-    //    }
-
-    //}
+    
 
     void OnCollisionEnter(Collision other)
     {
-        // Collision with a Bear event handler, gives the player 10 points
+        // Collision gold chest gives the player 10 points
         if (other.gameObject.CompareTag("Gold"))
         {
             Debug.Log("Gold!");
@@ -109,21 +58,27 @@ public class PlayerShooting : MonoBehaviour
             this._gameController.ScoreValue += 10;
         }
 
-        // Falling off the platform event handler, takes away a life and respawns to start of game
+        // Falling in the Lava takes away a life and respawns to start of game
         if (other.gameObject.CompareTag("Gutter"))
         {
             Debug.Log("Lava!");
-            this._spawn001();
+            this._spawnPoint();
             this._hurtSound.Play();
             this._gameController.LivesValue--;
+        }
+
+        // Falling in the Lava takes away a life and respawns to start of game
+        if (other.gameObject.CompareTag("Finish"))
+        {
+            Debug.Log("Finish!");
+            this._ohYeahSound.Play();
         }
 
     }
 
     // Private Methods
-
     // Spawns to start of game
-    private void _spawn001()
+    private void _spawnPoint()
     {
         this._transform.position = new Vector3(4.21f, 1.67f, -4.85f);
     }
