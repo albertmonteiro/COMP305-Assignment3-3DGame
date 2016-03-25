@@ -3,15 +3,8 @@ using System.Collections;
 
 public class PlayerShooting : MonoBehaviour
 {
-
     //PUBLIC MEMBER VARIABLES
-    //public Transform flashPoint;
-    //public GameObject muzzleFlash;
-    //public GameObject bulletImpact;
-    //public GameObject explosion;
-    //public Transform _transform;
-    public GameController _gameController;
-
+    public GameController gameController;
 
     // PRIVATE INSTANCE VARIABLES
     private Transform _transform;
@@ -20,14 +13,13 @@ public class PlayerShooting : MonoBehaviour
     private AudioSource _hurtSound;
     private AudioSource _goldSound;
     private AudioSource _ohYeahSound;
-    //private GameController _gameController;
 
     // Use this for initialization
     void Start()
     {
         this._transform = gameObject.GetComponent<Transform>();
         this._rigidBody = gameObject.GetComponent<Rigidbody>();
-        this._gameController = GameObject.FindWithTag("GameController").GetComponent("GameController") as GameController;
+        this.gameController = GameObject.FindWithTag("GameController").GetComponent("GameController") as GameController;
 
         // Setup AudioSources
         this._audioSources = gameObject.GetComponents<AudioSource>();
@@ -35,10 +27,11 @@ public class PlayerShooting : MonoBehaviour
         this._hurtSound = this._audioSources[2];
         this._ohYeahSound = this._audioSources[3];
 
-        // place the hero in the starting position
+        // Spawn to start of game
         this._spawnPoint();
 
     } // end Start
+
 
     // Update is called once per frame
     void Update()
@@ -55,7 +48,7 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("Gold!");
             this._goldSound.Play();
             Destroy(other.gameObject);
-            this._gameController.ScoreValue += 10;
+            this.gameController.ScoreValue += 10;
         }
 
         // Falling in the Lava takes away a life and respawns to start of game
@@ -64,14 +57,15 @@ public class PlayerShooting : MonoBehaviour
             Debug.Log("Lava!");
             this._spawnPoint();
             this._hurtSound.Play();
-            this._gameController.LivesValue--;
+            this.gameController.LivesValue--;
         }
 
-        // Falling in the Lava takes away a life and respawns to start of game
+        // Game over point
         if (other.gameObject.CompareTag("Finish"))
         {
             Debug.Log("Finish!");
             this._ohYeahSound.Play();
+            gameController.endGame();
         }
 
     }

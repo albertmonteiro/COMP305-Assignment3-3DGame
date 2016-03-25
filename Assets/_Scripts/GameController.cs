@@ -5,16 +5,20 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-    // PRIVATE INSTANCE VARIABLES
+    // PUBLIC INSTANCE VARIABLES ++++++++++++++++++++
+    public Text LivesLabel;
+    public Text ScoreLabel;
+    public Text GameOverLabel;
+    public Text HighScoreLabel;
+    public Button RestartButton;
+    public PlayerShooting playerShooting;
+
+    // PRIVATE INSTANCE VARIABLES ++++++++++++++++++++++++
     private int _scoreValue;
     private int _livesValue;
-
     private Vector3 _playerSpawnPoint;
 
-    //[SerializeField]
-    //private AudioSource _gameOverSound;
-
-    // PUBLIC ACCESS METHODS
+    // PUBLIC ACCESS METHODS ++++++++++++++++++++++++
     public int ScoreValue
     {
         get
@@ -41,7 +45,7 @@ public class GameController : MonoBehaviour
             this._livesValue = value;
             if (this._livesValue <= 0)
             {
-                this._endGame();
+                this.endGame();
             }
             else
             {
@@ -50,20 +54,11 @@ public class GameController : MonoBehaviour
         }
     }
 
-    // PUBLIC INSTANCE VARIABLES
-    public Text LivesLabel;
-    public Text ScoreLabel;
-    public Text GameOverLabel;
-    public Text HighScoreLabel;
-    public Button RestartButton;
-    public PlayerShooting playerShooting;
-    //public GameObject player;
 
     // Use this for initialization
     void Start()
     {
         this._initialize();
-
         //Instantiate(this.player, this._playerSpawnPoint, Quaternion.identity);
     }
 
@@ -72,8 +67,26 @@ public class GameController : MonoBehaviour
     {
 
     }
+    
+    // Invoke this method to end the game
+    public void endGame()
+    {
+        this.HighScoreLabel.text = "High Score: " + this._scoreValue;
+        this.GameOverLabel.gameObject.SetActive(true);
+        this.HighScoreLabel.gameObject.SetActive(true);
+        this.LivesLabel.gameObject.SetActive(false);
+        this.ScoreLabel.gameObject.SetActive(false);
+        this.RestartButton.gameObject.SetActive(true);
+        //this.playerShooting.gameObject.SetActive(false);
+    }
 
-    //PRIVATE METHODS ++++++++++++++++++
+
+    public void RestartButtonClick()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    //PRIVATE ACCESS METHODS ++++++++++++++++++
 
     //Initial Method
     private void _initialize()
@@ -87,22 +100,4 @@ public class GameController : MonoBehaviour
 
     }
 
-    private void _endGame()
-    {
-        this.HighScoreLabel.text = "High Score: " + this._scoreValue;
-        this.GameOverLabel.gameObject.SetActive(true);
-        this.HighScoreLabel.gameObject.SetActive(true);
-        this.LivesLabel.gameObject.SetActive(false);
-        this.ScoreLabel.gameObject.SetActive(false);
-        //this._gameOverSound.Play ();
-        this.RestartButton.gameObject.SetActive(true);
-        //this.playerShooting.gameObject.SetActive(false);
-    }
-
-    // PUBLIC METHODS
-
-    public void RestartButtonClick()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
 }
